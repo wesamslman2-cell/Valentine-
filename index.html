@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: pink;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #b30059;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .buttons {
+      position: relative;
+      width: 300px;
+      height: 150px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #yes {
+      background-color: #ff4d88;
+      color: white;
+    }
+
+    #no {
+      position: absolute;
+      background-color: #999;
+      color: white;
+      left: 150px;
+      top: 60px;
+      transition: all 0.05s ease;
+      font-weight: bold;
+    }
+
+    #effects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .effect {
+      position: absolute;
+      font-size: 40px;
+      font-weight: bold;
+      animation: fly 4s ease-out forwards;
+    }
+
+    @keyframes fly {
+      0% {
+        transform: scale(0) translate(0,0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(2) translate(var(--x), var(--y));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Will you be my Valentine, Yaso? 💖</h1>
+
+  <div class="buttons">
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+  </div>
+
+  <div id="effects"></div>
+
+  <script>
+    const noButton = document.getElementById("no");
+    const yesButton = document.getElementById("yes");
+    const effects = document.getElementById("effects");
+
+    const noTexts = [
+      "لا تحاولي مامي 😜",
+      "ما راح تقدري 😂",
+      "خلاص Yes 💖",
+      "هههه مستحيل 😈"
+    ];
+
+    function moveNoButton() {
+      const container = document.querySelector(".buttons");
+      const maxX = container.clientWidth - noButton.offsetWidth;
+      const maxY = container.clientHeight - noButton.offsetHeight;
+
+      noButton.style.left = Math.random() * maxX + "px";
+      noButton.style.top = Math.random() * maxY + "px";
+
+      const phrase = noTexts[Math.floor(Math.random() * noTexts.length)];
+      createEffect(phrase);
+    }
+
+    noButton.addEventListener("mouseover", moveNoButton);
+    noButton.addEventListener("touchstart", moveNoButton);
+    noButton.addEventListener("click", () => {
+      const phrase = noTexts[Math.floor(Math.random() * noTexts.length)];
+      createEffect(phrase);
+    });
+
+    yesButton.addEventListener("click", () => {
+      for (let i = 0; i < 60; i++) {
+        createEffectRandom();
+      }
+    });
+
+    function createEffectRandom() {
+      const items = [
+        "💖", "💘", "❤️", "🎆", "✨",
+        "I love you, Yaso.",
+        "You’re everything I’ve ever wished for."
+      ];
+      const text = items[Math.floor(Math.random() * items.length)];
+      createEffect(text);
+    }
+
+    function createEffect(text) {
+      const el = document.createElement("div");
+      el.className = "effect";
+      el.textContent = text;
+
+      const startX = Math.random() * window.innerWidth;
+      const startY = Math.random() * window.innerHeight;
+      el.style.left = startX + "px";
+      el.style.top = startY + "px";
+
+      const endX = (Math.random() - 0.5) * 600 + "px";
+      const endY = -Math.random() * 600 + "px";
+      el.style.setProperty("--x", endX);
+      el.style.setProperty("--y", endY);
+
+      effects.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+  </script>
+
+</body>
+</html>
